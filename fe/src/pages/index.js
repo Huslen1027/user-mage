@@ -2,8 +2,8 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 export default function Home({ data }) {
   const BE_URL = "http://localhost:3001/add-user";
-  const DELETE_URL = "http://localhost:3001/add-user";
-  const [use, setUse] = useState(data.users);
+  const DELETE_URL = "http://localhost:3001/delete-user";
+
   const [user, setuser] = useState([]);
   const newid = nanoid();
 
@@ -26,7 +26,7 @@ export default function Home({ data }) {
     const FETCHED_DATA = await fetch(BE_URL, options);
     const FETCHED_JSON = await FETCHED_DATA.json();
     setuser(FETCHED_JSON.users);
-    setUse(FETCHED_JSON.users);
+
     console.log(FETCHED_JSON);
   }
 
@@ -45,24 +45,14 @@ export default function Home({ data }) {
       body: JSON.stringify(data),
     };
     const FETCHED_DATA = await fetch(DELETE_URL, options);
-    const FETCHED_JSON = await FETCHED_DATA.text();
-    setuser(FETCHED_JSON.users);
-    setUse(FETCHED_JSON.users);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setuser(FETCHED_JSON);
+
     console.log(FETCHED_JSON);
   }
   return (
     <div className="flex items-center justify-center">
-      {/* <div>
-        {use.map((e, index) => {
-          return (
-            <div key={index}>
-              <h1>{e.username}</h1>
-              <p>{e.age}</p>
-            </div>
-          );
-        })}
-      </div> */}
-      <div className="w-[250px] p-4 bg-gray-300 rounded-lg text-xl">
+      <div className="w-[250px] p-4 bg-gray-300 rounded-lg text-xl ">
         <div>
           {user.map((e, index) => {
             return (
@@ -70,6 +60,7 @@ export default function Home({ data }) {
                 <h1>{e.username}</h1>
                 <p>{e.age}</p>
                 <button
+                  className="border border-spacing-1 rounded-md"
                   id={e.id}
                   onClick={(e) => {
                     console.log("target.id:", e.target.id);
